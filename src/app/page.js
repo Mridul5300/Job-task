@@ -3,33 +3,20 @@ import Image from "next/image";
 import { BiSolidBank } from "react-icons/bi";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { WiStars } from "react-icons/wi";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { IoArrowDown } from "react-icons/io5";
-import { CiCalendarDate } from "react-icons/ci";
 import data from '../../public/data.json'
 export default function Home() {
-  const [tabledata, setTableData] = useState([])
+
+  const [tableData] = useState(data);
   const [currentpage, setCurrentpage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [selectedFilter, setSelectedFilter] = useState("12 Months");
   const [selectedDate, setSelectedDate] = useState("");
   const [sortOrder, setSortOrder] = useState("asc")
-  useEffect(() => {
-
-    axios.get('/Data.json')
-      .then((response) => {
-        setTableData(response.data);
-        // console.log(response.data);
 
 
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  const filteredData = tabledata.filter((item) => {
+  const filteredData = tableData.filter((item) => {
     const currentDate = new Date();
     const itemDate = new Date(item.date);
 
@@ -56,7 +43,7 @@ export default function Home() {
   const sortedData = [...filteredData].sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA; // Ascending or descending sort
+    return sortOrder === "asc" ? dateA - dateB : dateB - dateA; 
   });
   const totalPages = Math.ceil(sortedData.length / itemsPerPage);
   const indexOfLastItem = currentpage * itemsPerPage;
@@ -70,7 +57,7 @@ export default function Home() {
 
 
   const handleDateChange = (event) => {
-    setSelectedDate(event.target.value); // Update selected date
+    setSelectedDate(event.target.value); 
   };
 
   return (
@@ -206,7 +193,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody className="text-center border-2">
-                {data.map((tabledatas) => (
+                {currentItems.map((tabledatas) => (
                   <tr className="border-b-2" key={tabledatas.txnId}>
                     <td className="flex items-center gap-2">
                       <input type="checkbox" />
