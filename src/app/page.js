@@ -6,12 +6,15 @@ import { WiStars } from "react-icons/wi";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { IoArrowDown } from "react-icons/io5";
-
+import { CiCalendarDate } from "react-icons/ci";
 
 export default function Home() {
   const [tabledata, setTableData] = useState([])
   const [currentpage, setCurrentpage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [selectedFilter, setSelectedFilter] = useState("12 Months");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc")
   useEffect(() => {
 
     axios.get('/Data.Json')
@@ -25,20 +28,60 @@ export default function Home() {
         console.error("Error fetching data:", error);
       });
   }, []);
-  const totalPages = Math.ceil(tabledata.length / itemsPerPage);
+
+  const filteredData = tabledata.filter((item) => {
+    const currentDate = new Date();
+    const itemDate = new Date(item.date);
+
+    // Filtering logic based on selected filter
+    let isWithinDateRange = true;
+    if (selectedDate) {
+      isWithinDateRange = itemDate.toDateString() === new Date(selectedDate).toDateString(); // Filter by selected date
+    }
+
+    switch (selectedFilter) {
+      case "12 Months":
+        return isWithinDateRange && itemDate >= new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+      case "30 Days":
+        return isWithinDateRange && itemDate >= new Date(currentDate.setDate(currentDate.getDate() - 30));
+      case "7 Days":
+        return isWithinDateRange && itemDate >= new Date(currentDate.setDate(currentDate.getDate() - 7));
+      case "24 hours":
+        return isWithinDateRange && itemDate >= new Date(currentDate.setHours(currentDate.getHours() - 24));
+      default:
+        return isWithinDateRange;
+    }
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return sortOrder === "asc" ? dateA - dateB : dateB - dateA; // Ascending or descending sort
+  });
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
   const indexOfLastItem = currentpage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = tabledata.slice(indexOfFirstItem, indexOfLastItem);
+
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
   const paginate = (pageNumber) => setCurrentpage(pageNumber);
+
+
+
+
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value); // Update selected date
+  };
+
   return (
     <div>
-
-      <div className="flex justify-between items-center py-4 px-16 m-4">
+      {/* NAVABAR */}
+      <div className="flex flex-col lg:flex-row justify-between items-center py-4 px-4 lg:px-16 m-4 space-y-4 lg:space-y-0">
 
         <h2 className="text-2xl font-semibold">Banking</h2>
 
 
-        <div className="flex items-center space-x-4 mr-14">
+        <div className="flex  items-center space-x-4 mr-14">
           <div className="flex items-center border border-gray-300 rounded-lg p-2 space-x-3">
             <span className="icon"><WiStars size={26} className="text-gray-500" /></span>
             <span>AI Categorisation</span>
@@ -67,7 +110,7 @@ export default function Home() {
         <button className="border-b-2 border-transparent px-4 py-2">Cards</button>
         <button className="border-b-2 border-transparent px-4 py-2">Statements</button>
       </div>
-
+      {/* MAIN DIV */}
       <main className="grid grid-cols-1 gap-4  mt-6 px-16 sm:grid-cols-3">
 
         <div className="p-6 bg-white rounded-lg border-2 relative max-w-xs w-full">
@@ -80,8 +123,6 @@ export default function Home() {
             <BiSolidBank size={24} className="text-purple-500" />
           </div>
         </div>
-
-
         <div className="p-6 bg-white rounded-lg border-2  relative max-w-xs w-full">
           <div className="flex flex-col gap-1">
             <p className="text-gray-600 font-semibold">CITI Bank</p>
@@ -92,8 +133,6 @@ export default function Home() {
             <BiSolidBank size={24} className="text-purple-500" />
           </div>
         </div>
-
-
         <div className="p-6 bg-white rounded-lg border-2  relative max-w-xs w-full">
           <div className="flex flex-col gap-1">
             <p className="text-gray-600 font-semibold">Yes Bank</p>
@@ -109,88 +148,105 @@ export default function Home() {
           <button className="text-blue-500 font-semibold">+ Add New</button>
         </div>
       </main>
+      {/* TABLE FUNCIONALITY */}
       <div className="ml-16 mb-2 mr-16" >
-        <div>
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Recent Transaction</h2>
-        </div>
-        <div className="border rounded-lg w-fit">
-            <div className="flex rounded-lg">
-              <h1 className="border-2 p-1">12 Months</h1>
-              <h2 className="border-2 p-1">30 Days</h2>
-              <h2 className="border-2 p-1">7 Days</h2>
-              <h2 className="border-2 p-1">24 hours</h2>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 lg:space-x-6">
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold">
+              Recent Transaction
+              <span className="block lg:inline text-sm font-normal">
+                {" "}12 months (10 Dec 2023 - 9 Dec 2024)
+              </span>
+            </h2>
+          </div>
+          <div className="border rounded-lg w-full lg:w-fit mt-4 lg:mt-0">
+            <div className="flex justify-between lg:justify-start rounded-lg">
+              {["12 Months", "30 Days", "7 Days", "24 hours"].map((filter) => (
+                <h2
+                  key={filter}
+                  className={`border-2 p-2 cursor-pointer ${selectedFilter === filter ? "bg-gray-300 text-black" : "bg-white"
+                    }`}
+                  onClick={() => setSelectedFilter(filter)}
+                >
+                  {filter}
+                </h2>
+              ))}
             </div>
+          </div>
+          <div className="relative w-full lg:w-fit mt-4 lg:mt-0">
+            <input
+              type="date"
+              className="block border border-gray-500 rounded-lg pl-10 pr-2 py-2 w-full lg:w-auto"
+              placeholder="Select a date"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+            {/* You can uncomment the icon if needed */}
+            {/* <CiCalendarDate className="absolute top-1/3 left-2 text-gray-500" /> */}
+          </div>
         </div>
-        <div>
-          <input ></input>  
-        </div>
-        </div>
-        
         <div className="overflow-x-hidden border-2 max-w-7xl mx-auto mt-2">
-  <div className="overflow-x-auto max-h-80"> 
-    <table className="min-w-full">
-      <thead className="bg-gray-100">
-        <tr className="gap-3 border">
-          <th className="flex p-3">
-            <input type="checkbox" />
-            Date <span><IoArrowDown className="text-xl" /></span>
-          </th>
-          <th>Merchant Name</th>
-          <th>Description</th>
-          <th>Transaction Type</th>
-          <th>TnxId</th>
-          <th>Amount</th>
-          <th>Account</th>
-          <th>Status</th>
-          <th>Categories</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody className="text-center border-2">
-        {currentItems.map((tabledatas) => (
-          <tr className="border-b-2" key={tabledatas.txnId}>
-            <td className="flex items-center gap-2">
-              <input type="checkbox" />
-              {tabledatas.date}
-            </td>
-            <td>{tabledatas.merchantName}</td>
-            <td>{tabledatas.description}</td>
-            <td>{tabledatas.transactionType}</td>
-            <td>{tabledatas.txnId}</td>
-            <td>{tabledatas.amount}</td>
-            <td>{tabledatas.account}</td>
-            <td className='outline-2 rounded-lg'>{tabledatas.status}</td>
-            <td>{tabledatas.categories}</td>
-            <td className="text-xl">:</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+          <div className="overflow-x-auto max-h-80">
+            <table className="min-w-full">
+              <thead className="bg-gray-100">
+                <tr className="gap-3 border">
+                  <th className="flex p-3">
+                    <input type="checkbox" />
+                    Date <span><IoArrowDown className="text-xl" /></span>
+                  </th>
+                  <th>Merchant Name</th>
+                  <th>Description</th>
+                  <th>Transaction Type</th>
+                  <th>TnxId</th>
+                  <th>Amount</th>
+                  <th>Account</th>
+                  <th>Status</th>
+                  <th>Categories</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody className="text-center border-2">
+                {currentItems.map((tabledatas) => (
+                  <tr className="border-b-2" key={tabledatas.txnId}>
+                    <td className="flex items-center gap-2">
+                      <input type="checkbox" />
+                      {tabledatas.date}
+                    </td>
+                    <td>{tabledatas.merchantName}</td>
+                    <td>{tabledatas.description}</td>
+                    <td>{tabledatas.transactionType}</td>
+                    <td>{tabledatas.txnId}</td>
+                    <td>{tabledatas.amount}</td>
+                    <td>{tabledatas.account}</td>
+                    <td className='outline-2 rounded-lg'>{tabledatas.status}</td>
+                    <td>{tabledatas.categories}</td>
+                    <td className="text-xl">:</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-  <div className="flex flex-col md:flex-row justify-between items-center m-2">
-    <div className="mb-2 md:mb-0">
-      <span className="text-sm">
-        Showing page {currentpage} of {totalPages}
-      </span>
-    </div>
-    <div className="flex space-x-2">
-      {[...Array(totalPages)].map((_, index) => (
-        <button
-          key={index}
-          onClick={() => paginate(index + 1)}
-          className={`px-3 py-1 border rounded-md ${currentpage === index + 1 ? 'bg-gray-500 text-white' : 'bg-white text-blue-500 hover:bg-gray-100'}`}
-        >
-          {index + 1}
-        </button>
-      ))}
-    </div>
-  </div>
-</div>
-
-
+          <div className="flex flex-col md:flex-row justify-between items-center m-2">
+            <div className="mb-2 md:mb-0">
+              <span className="text-sm">
+                Showing page {currentpage} of {totalPages}
+              </span>
+            </div>
+            <div className="flex space-x-2">
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => paginate(index + 1)}
+                  className={`px-3 py-1 border rounded-md ${currentpage === index + 1 ? 'bg-gray-500 text-white' : 'bg-white text-blue-500 hover:bg-gray-100'}`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
+    </div>
   );
 }
