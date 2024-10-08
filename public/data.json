@@ -1,0 +1,168 @@
+[
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Foodpanda",
+       "description": "Foodpanda",
+       "txnId": "3734934",
+       "transactionType": "Income",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Pending",
+       "categories": "Uncategorize, Liabilities"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Electric Bill",
+       "description": "Electric Bill",
+       "txnId": "6546456",
+       "transactionType": "Expense",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Reconciled",
+       "categories": "Uncategorize, Liabilities"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Internet Bill",
+       "description": "Internet Bill",
+       "txnId": "1547886",
+       "transactionType": "Expense",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "In Progress",
+       "categories": "Gods Sale"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Lunch",
+       "description": "Lunch",
+       "txnId": "8785215",
+       "transactionType": "Income",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Reconciled",
+       "categories": "Gods Sale"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Foodpanda",
+       "description": "Foodpanda",
+       "txnId": "6546464",
+       "transactionType": "Income",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Reconciled",
+       "categories": "Asset"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Coffee",
+       "description": "Coffee",
+       "txnId": "21314641",
+       "transactionType": "Income",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Reconciled",
+       "categories": "Asset"
+     },
+     {
+       "date": "6 Jan 24 02:00 PM",
+       "merchantName": "Coffee",
+       "description": "Coffee",
+       "txnId": "3734934",
+       "transactionType": "Income",
+       "amount": "$5412",
+       "account": "$5412",
+       "status": "Unreconciled",
+       "categories": "Asset"
+     },
+     {
+       "date": "7 Jan 24 10:00 AM",
+       "merchantName": "Grocery",
+       "description": "Supermarket Groceries",
+       "txnId": "4379834",
+       "transactionType": "Expense",
+       "amount": "$1000",
+       "account": "$1000",
+       "status": "Pending",
+       "categories": "Household"
+     },
+     {
+       "date": "7 Jan 24 11:30 AM",
+       "merchantName": "Phone Bill",
+       "description": "Monthly Phone Bill",
+       "txnId": "5678912",
+       "transactionType": "Expense",
+       "amount": "$200",
+       "account": "$200",
+       "status": "Reconciled",
+       "categories": "Utilities"
+     },
+     {
+       "date": "7 Jan 24 01:15 PM",
+       "merchantName": "Gas Station",
+       "description": "Fuel for Car",
+       "txnId": "1234567",
+       "transactionType": "Expense",
+       "amount": "$50",
+       "account": "$50",
+       "status": "In Progress",
+       "categories": "Transportation"
+     },
+     {
+       "date": "7 Jan 24 03:30 PM",
+       "merchantName": "Amazon",
+       "description": "Online Purchase",
+       "txnId": "8765432",
+       "transactionType": "Expense",
+       "amount": "$120",
+       "account": "$120",
+       "status": "Reconciled",
+       "categories": "Shopping"
+     },
+     {
+       "date": "7 Jan 24 05:00 PM",
+       "merchantName": "Uber",
+       "description": "Ride to Work",
+       "txnId": "9482756",
+       "transactionType": "Expense",
+       "amount": "$25",
+       "account": "$25",
+       "status": "Reconciled",
+       "categories": "Transportation"
+     },
+     {
+       "date": "7 Jan 24 07:45 PM",
+       "merchantName": "Netflix",
+       "description": "Subscription Payment",
+       "txnId": "5647382",
+       "transactionType": "Expense",
+       "amount": "$15",
+       "account": "$15",
+       "status": "Pending",
+       "categories": "Entertainment"
+     },
+     {
+       "date": "7 Jan 24 09:00 PM",
+       "merchantName": "Foodpanda",
+       "description": "Dinner Order",
+       "txnId": "4738291",
+       "transactionType": "Income",
+       "amount": "$30",
+       "account": "$30",
+       "status": "Reconciled",
+       "categories": "Food"
+     },
+     {
+       "date": "8 Jan 24 08:00 AM",
+       "merchantName": "Coffee Shop",
+       "description": "Morning Coffee",
+       "txnId": "6473829",
+       "transactionType": "Expense",
+       "amount": "$5",
+       "account": "$5",
+       "status": "Unreconciled",
+       "categories": "Food"
+     }
+   ]
+   

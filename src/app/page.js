@@ -7,7 +7,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { IoArrowDown } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
-
+import data from '../../public/data.json'
 export default function Home() {
   const [tabledata, setTableData] = useState([])
   const [currentpage, setCurrentpage] = useState(1);
@@ -17,7 +17,7 @@ export default function Home() {
   const [sortOrder, setSortOrder] = useState("asc")
   useEffect(() => {
 
-    axios.get('../Data.Json')
+    axios.get('/Data.json')
       .then((response) => {
         setTableData(response.data);
         // console.log(response.data);
@@ -206,7 +206,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody className="text-center border-2">
-                {currentItems.map((tabledatas) => (
+                {data.map((tabledatas) => (
                   <tr className="border-b-2" key={tabledatas.txnId}>
                     <td className="flex items-center gap-2">
                       <input type="checkbox" />
