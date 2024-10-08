@@ -17,7 +17,7 @@ export default function Home() {
   const [sortOrder, setSortOrder] = useState("asc")
   useEffect(() => {
 
-    axios.get('https://job-task-gules.vercel.app/Data.Json')
+    axios.get('../Data.Json')
       .then((response) => {
         setTableData(response.data);
         // console.log(response.data);
